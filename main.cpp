@@ -28,6 +28,7 @@ int main(int argc, char** argv) {
     if (argc > 1 )
     {
         std::size_t const n = atoi(argv[1]);
+        std::size_t const reps = atoi(argv[2]);
         MatrixXd a(n, n);
         MatrixXd b(n, n);
         MatrixXd c(n, n);
@@ -36,13 +37,18 @@ int main(int argc, char** argv) {
         high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
 //        high_resolution_timer walltime;
-        c = a * b;
+
+        for (std::size_t i = 0; i < reps; ++i)
+        {
+            high_resolution_clock::time_point t1 = high_resolution_clock::now();
+            c = a * b;
+            high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+            microseconds elapsed = duration_cast<microseconds>(t2-t1);
+            cout<<"matrix size: "<<n<<" finished in "<<elapsed.count()<<" microseconds"<<endl;
+        }
 //        const double duration = walltime.elapsed();
-        high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
-        microseconds elapsed = duration_cast<microseconds>(t2-t1);
-
-        cout<<"matrix size: "<<n<<" finished in "<<elapsed.count()<<" microseconds"<<endl;
     }
     return 0;
 }
