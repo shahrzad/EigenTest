@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Eigen/Core>
 #include <chrono>
+#include <hpx/hpx_main.hpp>
 
 using namespace Eigen;
 using namespace std;
