@@ -1,12 +1,15 @@
 #include <iostream>
 #include <Eigen/Core>
 #include <chrono>
+#ifdef EIGEN_HAS_HPX
 #include <hpx/hpx_main.hpp>
+#endif
 
 using namespace Eigen;
 using namespace std;
-
-//using hpx::chrono::high_resolution_timer;
+using std::chrono::high_resolution_clock;
+using std::chrono::duration_cast;
+using std::chrono::microseconds;
 
 typedef Matrix<double, Dynamic, Dynamic> MatrixXd;
 
@@ -20,11 +23,9 @@ void initialize(MatrixXd& a, MatrixXd& b, MatrixXd& c, const size_t n)
             c(i, j) = 0;
         }
 }
-int main(int argc, char** argv) {
-    using std::chrono::high_resolution_clock;
-    using std::chrono::duration_cast;
-    using std::chrono::microseconds;
 
+int main(int argc, char** argv)
+{
     if (argc > 1 )
     {
         std::size_t const n = atoi(argv[1]);
@@ -34,9 +35,6 @@ int main(int argc, char** argv) {
         MatrixXd c(n, n);
 
         initialize(a, b, c, n);
-        high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
-//        high_resolution_timer walltime;
 
         for (std::size_t i = 0; i < reps; ++i)
         {
@@ -47,7 +45,6 @@ int main(int argc, char** argv) {
             microseconds elapsed = duration_cast<microseconds>(t2-t1);
             cout<<"matrix size: "<<n<<" finished in "<<elapsed.count()<<" microseconds"<<endl;
         }
-//        const double duration = walltime.elapsed();
 
     }
     return 0;
